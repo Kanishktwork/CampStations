@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampStation</title>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="/stylesheets/main.css">
+    <link rel="stylesheet" href="/stylesheets/map.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+</head>
+
+<body class="d-flex flex-column vh-100 ">
+    <%- include('../partials/navbar')%>
+
+    <div class="card">
+            <div id="cluster-map" class="mb-3"></div>
+      </div>
+
+    <main class="container mt-5">
+        <%- include('../partials/flash') %>
+
+        <!-- <div id="cluster-map" class="mb-3"></div> -->
+
+        <h1 class="fst-italic">All Campgrounds</h1>
+        <div>
+            <a class="btn btn-success" href="/campgrounds/new">Add Campground</a>
+        </div>
+
+        <% for (let campground of campgrounds){%>
+        <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+
+                        <% if(campground.image.length){ %>
+                    <img id="thumbnail" class="img-fluid" alt="" src="<%=campground.image[0].fitinframe %>">
+                    <% }else{ %>
+                        <img id="thumbnail" class="img-fluid" alt=""
+                        src="https://res.cloudinary.com/dx8saxi8r/image/upload/v1610079637/YelpCamp/crdaplsd8ozwra3nm9a9.jpg">
+                        <% } %>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= campground.title %> </h5>
+                        <p class="card-text"><%= campground.description.substring(0,300)%>......</p>
+                        <p class="card-text">
+                            <small class="text-muted"><%= campground.location%></small>
+                        </p>
+                        <a class="btn btn-primary" href="/campgrounds/<%=campground._id%>">View <%=campground.title%></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% }%>
+
+        <script>
+            const mapToken ='<%- process.env.MAPBOX_TOKENS %>'
+            const campgrounds= { features: <%-JSON.stringify(campgrounds)%>}
+        </script>
+
+        <script src="/javascript/clusterMap.js"></script>
+
+    </main>
+    <%- include('../partials/footer')%>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+            
+    <script src="/javascript/validationform.js"></script>
+       
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" 
+        crossorigin="anonymous"></script>
+        
+    </body>
+
+</html>
